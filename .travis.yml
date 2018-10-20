@@ -1,0 +1,13 @@
+language: android
+android:
+  components:
+    - tools
+    - build-tools-28.0.3
+    - platform-tools
+    - android-28
+
+jdk:
+  - oraclejdk8
+
+script:
+  - ./gradlew assembleRelease
