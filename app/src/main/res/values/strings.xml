@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">New Version Available</string>
+    <string name="appName">New Version Available</string>
+    <string name="defaultVersionName">0.0.0–0</string>
 </resources>

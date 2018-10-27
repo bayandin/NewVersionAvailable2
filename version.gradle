@@ -1,0 +1,12 @@
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+def versionCode = 1
+
+ext.myVersionCode = {
+    return versionCode
+}
+
+ext.myVersionName = {
+    return "${versionMajor}.${versionMinor}.${versionPatch}–${versionCode}"
+}
