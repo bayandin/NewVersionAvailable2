@@ -1,22 +1,45 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply from: '../version.gradle'
+def buildData = new JsonSlurper().parseText(new File('build.json').text)
+
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def keystoreProperties = new Properties()
+
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
     defaultConfig {
         applicationId 'in.bayand.newversionavailable'
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 28
-        versionCode myVersionCode()
-        versionName myVersionName()
+        versionCode buildData.version.code
+        versionName "${buildData.version.major}.${buildData.version.minor}.${buildData.version.patch}-${buildData.version.code}"
+        buildConfigField('String', 'START_COLOR', "\"${buildData.color.start}\"")
+        buildConfigField('String', 'END_COLOR', "\"${buildData.color.end}\"")
     }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
+
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

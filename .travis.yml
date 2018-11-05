@@ -9,5 +9,12 @@ android:
 jdk:
   - oraclejdk8
 
+before_install:
+  - openssl aes-256-cbc -K $encrypted_e2838fa2ea2b_key -iv $encrypted_e2838fa2ea2b_iv -in secrets.tar.enc -out secrets.tar -d
+  - tar xvf secrets.tar
+
+before_script:
+  - ./scripts/bump --patch
+
 script:
   - ./gradlew assembleRelease

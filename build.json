@@ -1,0 +1,12 @@
+{
+  "version": {
+    "major": 2,
+    "minor": 0,
+    "patch": 1,
+    "code": 1559
+  },
+  "color": {
+    "start": "#79f2e4",
+    "end": "#7989f2"
+  }
+}

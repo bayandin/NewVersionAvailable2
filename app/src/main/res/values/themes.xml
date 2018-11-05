@@ -1,5 +1,0 @@
-<resources>
-    <style name="BaseTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimaryDark">@color/startColor</item>
-    </style>
-</resources>

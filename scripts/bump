@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+
+import colorsys
+import json
+import os
+import random
+import sys
+
+GOLDEN_RATIO_CONJUGATE = 0.6180339887498948482
+BUILD_JSON = os.path.join(os.path.dirname(__file__), '../build.json')
+
+
+def random_color():
+    # based on http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+
+    hue = random.random()
+    hue += GOLDEN_RATIO_CONJUGATE
+    hue %= 1
+
+    return _hsv2rgb(hue, 0.5, 0.95)
+
+
+def _hsv2rgb(h, s, v):
+    r, g, b = colorsys.hsv_to_rgb(h, s, v)
+    return '#%02x%02x%02x' % (int(r * 255), int(g * 255), int(b * 255))
+
+
+def bump(category=None):
+    if category is None:
+        raise RuntimeError('category is not set')
+
+    with open(BUILD_JSON) as f:
+        data = json.load(f)
+
+    if category == 'major':
+        data['version']['major'] += 1
+        data['version']['minor'] = 0
+        data['version']['patch'] = 0
+        data['version']['code'] += 1
+        data['color']['start'] = random_color()
+        data['color']['end'] = random_color()
+    elif category == 'minor':
+        data['version']['minor'] += 1
+        data['version']['patch'] = 0
+        data['version']['code'] += 1
+        data['color']['start'] = random_color()
+        data['color']['end'] = random_color()
+    elif category == 'patch':
+        data['version']['patch'] += 1
+        data['version']['code'] += 1
+        data['color']['start'] = random_color()
+        data['color']['end'] = random_color()
+    elif category == 'code':
+        data['version']['code'] += 1
+
+    with open(BUILD_JSON, 'w') as f:
+        json.dump(data, f, indent=2)
+
+
+if __name__ == '__main__':
+    argv = sys.argv
+
+    category = None
+
+    if '--patch' in argv:
+        category = 'patch'
+
+    if '--minor' in argv:
+        category = 'minor'
+
+    if '--major' in argv:
+        category = 'major'
+
+    if '--code' in argv:
+        category = 'code'
+
+    bump(category)

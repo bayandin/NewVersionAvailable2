@@ -1,4 +1,4 @@
 <resources>
-    <style name="AppTheme" parent="BaseTheme">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
     </style>
 </resources>
