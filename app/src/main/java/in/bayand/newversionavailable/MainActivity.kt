@@ -1,11 +1,11 @@
 package `in`.bayand.newversionavailable
 
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
-import android.graphics.drawable.GradientDrawable
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 

@@ -9,3 +9,9 @@
 /build
 /captures
 .externalNativeBuild
+
+api-project.json
+github-token.txt
+keystore.properties
+release.keystore
+secrets.tar

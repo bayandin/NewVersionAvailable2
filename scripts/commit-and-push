@@ -1,0 +1,30 @@
+#! /usr/bin/env bash
+
+# Credit: https://gist.github.com/willprice/e07efd73fb7f13f917ea
+
+setup_git() {
+  git config --global user.email "a.bayandin+T3-M4@gmail.com"
+  git config --global user.name "T3-M4"
+  git remote rm origin
+  GH_TOKEN=$(cat github-token.txt)
+  git remote add origin https://T3-M4:${GH_TOKEN}@github.com/bayandin/NewVersionAvailable2.git
+}
+
+git_commit() {
+  git checkout master
+  git add build.json
+  git commit -m "Automatic update: $(date +%Y-%m-%d)" -m "[skip ci]"
+}
+
+git_push() {
+  git push origin master
+}
+
+setup_git
+
+git_commit
+
+# Attempt to commit to git only if "git commit" succeeded
+if [ $? -eq 0 ]; then
+  git_push
+fi

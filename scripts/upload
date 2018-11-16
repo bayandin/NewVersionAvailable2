@@ -1,0 +1,108 @@
+#! /usr/bin/env python2
+
+import httplib2
+import json
+import os
+import sys
+
+from apiclient import discovery
+from oauth2client.service_account import ServiceAccountCredentials
+
+ALPHA = 'alpha'
+BETA = 'beta'
+PRODUCTION = 'production'
+
+BUILD_JSON = os.path.join(os.path.dirname(__file__), '../build.json')
+
+
+def auth():
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(
+        os.path.join(os.path.dirname(__file__), '../api-project.json'),
+        scopes=['https://www.googleapis.com/auth/androidpublisher']
+    )
+
+    http = httplib2.Http()
+    http = credentials.authorize(http)
+
+    service = discovery.build('androidpublisher', 'v3', http=http)
+
+    return service
+
+
+def publish(service, package_name, apk_file, track, whats_new):
+    with open(BUILD_JSON) as f:
+        build_json = json.load(f)
+
+    result = service.edits().insert(
+        packageName=package_name,
+        body={},
+    ).execute()
+    edit_id = result['id']
+
+    service.edits().apks().upload(
+        editId=edit_id,
+        packageName=package_name,
+        media_body=apk_file,
+    ).execute()
+
+    service.edits().tracks().update(
+        editId=edit_id,
+        packageName=package_name,
+        track=track,
+        body={
+            'track': track,
+            'releases': [{
+                'status': 'completed',
+                'versionCodes': [build_json['version']['code']],
+                'releaseNotes': [{
+                    'language': 'en-US',
+                    'text': whats_new,
+                }]
+            }]
+        },
+    ).execute()
+
+    service.edits().listings().update(
+        editId=edit_id,
+        language='en-US',
+        packageName=package_name,
+        body={
+            'title': 'New Version Available',
+            'shortDescription': 'Damn simple application with regular updates.',
+            'fullDescription': 'If you are having fun at availability of new version of any installed application the New Version Available is definitely created for you.\nNew updates are regular.',
+        },
+    ).execute()
+
+    service.edits().commit(
+        editId=edit_id,
+        packageName=package_name
+    ).execute()
+
+
+def main(argv):
+    apk_file = os.path.join(os.path.dirname(__file__), '..', 'app/build/outputs/apk/release/app-release.apk')
+
+    with open(BUILD_JSON) as f:
+        version_json = json.load(f)['version']
+
+    if '--alpha' in argv:
+        track = ALPHA
+    elif '--beta' in argv:
+        track = BETA
+    elif '--production' in argv:
+        track = PRODUCTION
+    else:
+        track = ALPHA
+
+    service = auth()
+    publish(
+        service,
+        'in.bayand.newversionavailable',
+        apk_file,
+        track,
+        'Regular update {major}.{minor}.{patch}-{code}'.format(**version_json)
+    )
+
+
+if __name__ == '__main__':
+    main(sys.argv)
