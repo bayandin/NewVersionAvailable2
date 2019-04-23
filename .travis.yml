@@ -45,4 +45,4 @@ deploy:
       branch: master
 
 after_deploy:
-  - ./scripts/commit-and-push
+  - ./scripts/commit-and-push > /dev/null 2>&1
