@@ -6,15 +6,12 @@ setup_git() {
   git remote rm origin
   GH_TOKEN=$(cat github-token.txt)
   git remote add origin https://T3-M4:${GH_TOKEN}@github.com/bayandin/NewVersionAvailable2.git
-
-  git config --global user.email "a.bayandin+T3-M4@gmail.com"
-  git config --global user.name "T3-M4"
 }
 
 git_commit() {
   git checkout master
   git add build.json
-  git commit -m "Automatic update: $(date +%Y-%m-%d)" -m "[skip ci]"
+  git commit -m "Automatic update: $(date +%Y-%m-%d)" -m "[skip ci]" --author="T3-M4 <a.bayandin+T3-M4@gmail.com>"
 }
 
 git_push() {
