@@ -39,6 +39,7 @@ before_deploy:
 
 deploy:
   provider: script
+  skip_cleanup: true
   script: ./scripts/upload --production
   on:
       branch: master
