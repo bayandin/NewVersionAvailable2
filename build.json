@@ -1,12 +1,12 @@
 {
   "color": {
-    "start": "#79d1f2", 
-    "end": "#79eff2"
+    "start": "#79cdf2", 
+    "end": "#f279ad"
   }, 
   "version": {
     "major": 2, 
-    "code": 1631, 
+    "code": 1632, 
     "minor": 0, 
-    "patch": 73
+    "patch": 74
   }
 }
