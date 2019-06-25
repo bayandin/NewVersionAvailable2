@@ -4,9 +4,9 @@ language: android
 android:
   components:
     - tools
-    - build-tools-28.0.3
+    - build-tools-29.0.0
     - platform-tools
-    - android-28
+    - android-29
 
 jdk:
   - oraclejdk8

@@ -14,13 +14,13 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.0'
 
     defaultConfig {
         applicationId 'in.bayand.newversionavailable'
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode buildData.version.code
         versionName "${buildData.version.major}.${buildData.version.minor}.${buildData.version.patch}-${buildData.version.code}"
         buildConfigField('String', 'START_COLOR', "\"${buildData.color.start}\"")
@@ -49,6 +49,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
