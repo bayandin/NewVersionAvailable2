@@ -9,7 +9,7 @@ android:
     - android-29
 
 jdk:
-  - oraclejdk8
+  - openjdk11
 
 cache:
   directories:
@@ -42,7 +42,7 @@ deploy:
   skip_cleanup: true
   script: ./scripts/upload --production
   on:
-      branch: master
+    branch: master
 
 after_deploy:
   - ./scripts/commit-and-push > /dev/null 2>&1
