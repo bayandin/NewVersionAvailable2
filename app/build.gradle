@@ -1,54 +1,54 @@
 import groovy.json.JsonSlurper
 
-apply plugin: 'com.android.application'
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+}
 
-apply plugin: 'kotlin-android'
+def buildData = new JsonSlurper().parseText(new File("build.json").text)
 
-apply plugin: 'kotlin-android-extensions'
-
-def buildData = new JsonSlurper().parseText(new File('build.json').text)
-
-def keystorePropertiesFile = rootProject.file('keystore.properties')
+def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.0'
+    compileSdkVersion(29)
+    buildToolsVersion("29.0.0")
 
     defaultConfig {
-        applicationId 'in.bayand.newversionavailable'
-        minSdkVersion 16
-        targetSdkVersion 29
-        versionCode buildData.version.code
-        versionName "${buildData.version.major}.${buildData.version.minor}.${buildData.version.patch}-${buildData.version.code}"
-        buildConfigField('String', 'START_COLOR', "\"${buildData.color.start}\"")
-        buildConfigField('String', 'END_COLOR', "\"${buildData.color.end}\"")
+        applicationId = "in.bayand.newversionavailable"
+        minSdkVersion(16)
+        targetSdkVersion(29)
+        versionCode = buildData.version.code
+        versionName = "${buildData.version.major}.${buildData.version.minor}.${buildData.version.patch}-${buildData.version.code}"
+        buildConfigField("String", "START_COLOR", "\"${buildData.color.start}\"")
+        buildConfigField("String", "END_COLOR", "\"${buildData.color.end}\"")
     }
 
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            keyAlias(keystoreProperties["keyAlias"])
+            keyPassword(keystoreProperties["keyPassword"])
+            storeFile(file(keystoreProperties["storeFile"]))
+            storePassword(keystoreProperties["storePassword"])
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig(signingConfigs.release)
 
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled(true)
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation(fileTree(dir: "libs", include: ["*.jar"]))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+    implementation("androidx.appcompat:appcompat:1.0.2")
+    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
 }
